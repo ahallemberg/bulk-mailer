@@ -1,0 +1,4 @@
+## Config
+
+SMTP_SERVER=
+SENDER_PASSWORD=
