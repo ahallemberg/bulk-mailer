@@ -1,1 +1,5 @@
-Dette er en template
+Application Update 
+
+Sorry {recipient}, we are contacting you regarding {subject}
+
+From {sender}
