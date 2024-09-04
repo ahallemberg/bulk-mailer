@@ -52,7 +52,6 @@ def main() -> None:
             print(f"Email sent successfully to {recipient["mail"]}")
         except Exception as e:
             print(f"Failed to send email to {recipient["mail"]}: {str(e)}")
-            raise e
 
 if __name__ == "__main__":
     main()
