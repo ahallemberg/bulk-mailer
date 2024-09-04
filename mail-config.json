@@ -1,0 +1,5 @@
+{
+  "subject": "Application update", 
+  "template": "template.txt",
+  "recipients": ["user1@mail.com", "user2@mail.com"]
+}
