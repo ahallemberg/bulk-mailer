@@ -1,5 +1,15 @@
 {
-  "subject": "Application update", 
-  "template": "template.txt",
-  "recipients": ["ask.hallem.berg@ascendntnu.no", "oliver.ekelund@ascendntnu.no"]
+    "subject": "Application update", 
+    "template": "template.txt",
+    "recipients": [
+        {
+            "mail": "ask.hallem.berg@ascendntnu.no",
+            "fields": [
+                {
+                    "name": "name",
+                    "value": "Ask Hallem-Berg"
+                }
+            ]
+        }
+    ]
 }

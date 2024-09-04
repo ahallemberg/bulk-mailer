@@ -1,5 +1,6 @@
-Application Update 
+Application Update {recipient}
 
-Sorry {recipient}, we are contacting you regarding {subject}
+Hello {name}
+We are contacting you regarding {subject}
 
 From {sender}

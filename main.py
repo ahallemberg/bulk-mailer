@@ -3,7 +3,6 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from dotenv import load_dotenv
 import os
-import csv
 import json
 
 def load_json_config() -> dict: 
@@ -13,22 +12,21 @@ def load_json_config() -> dict:
 
 def load_template(file_name: str) -> str: 
     with open(os.path.join(os.path.dirname(__file__), file_name), encoding="utf-8") as f: 
-        reader = csv.DictReader(f)
-
         return f.read()
 
-def send_email(smtp_server: str, smtp_port: int, sender: str, sender_password: str, recipient: str, subject: str, body: str) -> None:
-    full_name = recipient.split("@")[0].split("")
+def send_email(smtp_server: str, smtp_port: int, sender: str, sender_password: str, recipient: dict, subject: str, body: str) -> None:
     # special replacements for template
-    body = body.replace('{recipient}', recipient)
+    body = body.replace('{recipient}', recipient["mail"])
     body = body.replace('{subject}', subject)
     body = body.replace('{sender}', sender)
-    body = body.replace('{full_name}', full_name)
+    for field in recipient["fields"]: 
+        replace_part = "{" + field["name"] + "}"
+        body = body.replace(replace_part, field["value"])
 
     # create message
     message = MIMEMultipart()
     message["From"] = sender
-    message["To"] = recipient
+    message["To"] = recipient["mail"]
     message["Subject"] = subject
     message.attach(MIMEText(body, "plain"))
 
@@ -44,16 +42,16 @@ def main() -> None:
     SENDER_MAIL = os.getenv("SENDER_MAIL")
     SENDER_PASSWORD = os.getenv("SENDER_PASSWORD")
     _cfg = load_json_config()
-    RECIPIENTS = _cfg["recipients"]
+    RECIPIENTS: dict = _cfg["recipients"]
     SUBJECT = _cfg["subject"]
     TEMPLATE = load_template(_cfg["template"])
 
     for recipient in RECIPIENTS:
         try:
             send_email(SMTP_SERVER, SMTP_PORT, SENDER_MAIL, SENDER_PASSWORD, recipient, SUBJECT, TEMPLATE)
-            print(f"Email sent successfully to {recipient}")
+            print(f"Email sent successfully to {recipient["mail"]}")
         except Exception as e:
-            print(f"Failed to send email to {recipient}: {str(e)}")
+            print(f"Failed to send email to {recipient["mail"]}: {str(e)}")
             raise e
 
 if __name__ == "__main__":
